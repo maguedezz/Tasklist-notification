@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Notifications\TaskNotification;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -38,7 +39,7 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Task $task)
     {
         $request->validate([
             'title' => 'required|string|max:200',
@@ -53,6 +54,10 @@ class TaskController extends Controller
             'due_date' => $request->due_date,
             'priority' => $request->priority
         ]);
+
+        // Send a notification to the authenticated user
+
+        // auth()->user()->notify(new TaskNotification($task));
 
         return redirect()->route('tasks.index');
     }

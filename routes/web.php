@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,15 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/tasks/{task}/complete', [TaskController::class, 'markCompleted'])->name('tasks.complete');
 });
 
+// Route::get('/notifications', [NotificationController::class, 'index'])
+//     ->middleware('auth')
+//     ->name('notifications.index');
 
+// Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])
+//     ->middleware('auth')
+//     ->name('notifications.read');
+
+// Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
+//     ->name('notifications.destroy');    
 
 require __DIR__.'/auth.php';
