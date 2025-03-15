@@ -15,6 +15,7 @@ class TaskController extends Controller
         // Get the status filter from the request
 
         $status = $request->get('status');
+        $query = Task::query();
 
         if ($status === 'completed') {
             $tasks = Task::where('is_completed', true)->get();
@@ -23,6 +24,13 @@ class TaskController extends Controller
         } else {
             $tasks = Task::all();
         }
+
+        if ($request->has('priority')) {
+            $priority = $request->input('priority');
+            $query->where('priority', $priority);
+        }
+
+        $tasks = $query->where('user_id', auth()->id())->get();
 
         return view('tasks.index', compact('tasks'));
     }
@@ -33,14 +41,17 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:200'
+            'title' => 'required|string|max:200',
+            'due_date' => 'nullable|date',
+            'priority' => 'required|in:low,medium,high'
         ]);
 
         Task::create([
             'title' => $request->title,
             'user_id' => auth()->id(),
-            'is_completed' => false
-
+            'is_completed' => false,
+            'due_date' => $request->due_date,
+            'priority' => $request->priority
         ]);
 
         return redirect()->route('tasks.index');
@@ -52,14 +63,17 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'title' => 'required|string|max:200'
+            'title' => 'required|string|max:200',
+            'due_date' => 'nullable|date',
+            'priority' => 'required|in:low,medium,high'
         ]);
 
         $task->update([
             'title' => $request->title,
             'user_id' => auth()->id(),
-            'is_completed' => false
-
+            'is_completed' => false,
+            'due_date' => $request->due_date ? $request->due_date : null,
+            'priority' => $request->priority
         ]);
 
         return redirect()->route('tasks.index');

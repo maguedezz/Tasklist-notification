@@ -12,8 +12,25 @@
             <input type="text" name="title" id="title" class="form-control" required>
         </div>
 
+        <!-- Due Date -->
+        <div class="mb-3">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="date" name="due_date" id="due_date" class="form-control">
+        </div>
+
+        <!-- Priority -->
+        <div class="mb-3">
+            <label for="priority" class="form-label">Priority</label>
+            <select name="priority" id="priority" class="form-control" required>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Create Task</button>
+        
     </form>
 </div>
 @endsection
